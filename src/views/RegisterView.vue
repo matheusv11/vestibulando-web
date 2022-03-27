@@ -32,7 +32,7 @@ const request = async () => {
 
 <template>
     <div>
-        <form @submit.prevent="request">
+        <form @submit.prevent="request" method="POST">
             <input v-model="form.name" type="text" name="name" placeholder="Nome" >
             <input v-model="form.email" type="email" name="email" placeholder="Email" >
             <input v-model="form.password" type="password" name="password" placeholder="Senha" >
