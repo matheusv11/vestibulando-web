@@ -1,0 +1,47 @@
+<script setup lang="ts">
+import { ref } from "vue"
+import axios from "@/utils/axios"
+
+const formObject = {
+    name: "",
+    email: "",
+    password: "",
+    repeatPassword: ""
+}
+
+const form = ref({...formObject})
+
+const request = async () => {
+    // CASO TODOS CAMPOS SEJAM PREENCHIDOS E A SENHA SEJA IGUAL
+    const { name, email, password, repeatPassword } = form.value
+    
+    if(password !== repeatPassword){
+       return alert("Oh o carro do leite")
+    }
+
+    await axios.post("/user", {
+        name,
+        email,
+        password
+    });
+
+    form.value = { ...formObject }
+}
+
+</script>
+
+<template>
+    <div>
+        <form @submit.prevent="request">
+            <input v-model="form.name" type="text" name="name" placeholder="Nome" >
+            <input v-model="form.email" type="email" name="email" placeholder="Email" >
+            <input v-model="form.password" type="password" name="password" placeholder="Senha" >
+            <input v-model="form.repeatPassword" type="password" name="repeatPassowrd" placeholder="Repetir Senha" >
+            <button type="submit"> Submeta </button>
+        </form>
+    </div>
+</template>
+
+<style>
+
+</style>
