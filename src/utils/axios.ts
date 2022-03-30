@@ -39,7 +39,7 @@ axiosConfig.interceptors.response.use((response: AxiosResponse) => {
 
     return response
 }, (error: AxiosError) => {
-    
+    // VALIDAR SE TEM MENSAGEM MESMO
     messageState.message = { // MELHORAR A SETAGEM NO PINIA, USAR MAIS ACTIONS
         type: "error",
         text: error.response.data.message

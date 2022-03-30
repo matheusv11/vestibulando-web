@@ -18,6 +18,11 @@ const router = createRouter({
       component: () => import('../views/RegisterView.vue')
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
@@ -29,7 +34,8 @@ const router = createRouter({
 })
 
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => { // VALIDAR ROTAS // SE TEM TOKEN OU NÃO
+  // validar refresh token a cada requisição ou mudança de pagina
   const messageState = useMessageStore() // OU UM ACTION COM TIMEOUT PRA LIMPAR
   messageState.message = {
     type: "",

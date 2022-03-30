@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+// import { RouterLink, RouterView } from 'vue-router'
 import LoadingComponent from "@/components/Loading.vue"
 import NotifyComponent from "@/components/Notify.vue"
+import Navbar from "@/components/Navbar.vue"
 
 import { useLoadingStore } from "@/stores/loading"
 
@@ -11,17 +12,16 @@ const loadingState = useLoadingStore()
 
 <template>
   <header>
+      <Navbar/>
       <NotifyComponent/>
       <LoadingComponent v-if="loadingState.loading"/>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/cadastro"> Registrar-se </RouterLink>
-      </nav>
   </header>
 
-  <RouterView />
+  <!-- PÁGINAS -->
+  <RouterView /> 
 </template>
 
 <style>
+/* CSS ESCOPADO */
 
 </style>
