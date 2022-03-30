@@ -26,9 +26,9 @@ const request = async () => {
 
 <template>
     <div>
-        <form @submit.prevent="request" method="POST">
-            <input class="form-control" v-model="form.email" type="email" name="email" placeholder="Email" >
-            <input class="form-control" v-model="form.password" type="password" name="password" placeholder="Senha" >
+        <form class="d-flex justify-content-center" @submit.prevent="request" method="POST">
+            <input class="form-control me-2 w-25" v-model="form.email" type="email" name="email" placeholder="Email" >
+            <input class="form-control me-2 w-25" v-model="form.password" type="password" name="password" placeholder="Senha" >
             <button class="btn btn-primary" type="submit"> Login </button>
         </form>
     </div>
