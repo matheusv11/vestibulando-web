@@ -19,6 +19,15 @@
           <li class="nav-item">
             <RouterLink class="nav-link" active-class="active" to="/login"> Login </RouterLink>
           </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" active-class="active" to="/disciplina"> Cadastrar Disciplina </RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" active-class="active" to="/assunto"> Cadastrar Assunto </RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" active-class="active" to="/vestibular"> Cadastrar Vestibular </RouterLink>
+          </li>
         </ul>
 
         <form class="d-flex">
