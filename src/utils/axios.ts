@@ -1,7 +1,8 @@
 // OU INSTANCIAR NO VUE // POR DESEMPENHO, O IMPORT DEVE SER MAIS RAPIDO
 // CONFIGURAR OS INTERCEPTORS
 import axios from "axios";
-import { useLoadingStore } from "@/stores/loading"
+// import { createPinia } from "pinia"; // OU EXPORTAR EM UM ARQUIVO O PINIA
+import { useLoadingStore } from "@/stores/loading" // RESOLVER AINDA PROBLEMA DA INSTANCIA DO PINIA
 
 const loadingState = useLoadingStore()
 
