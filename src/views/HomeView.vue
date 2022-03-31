@@ -6,5 +6,6 @@ import Navbar from '@/components/Navbar.vue'
 <template>
   <main>
     <!-- <Navbar msg="sexxx"/> -->
+    <!-- PÁGINA DE FEED -->
   </main>
 </template>
