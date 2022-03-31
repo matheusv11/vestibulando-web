@@ -42,7 +42,7 @@ onMounted(() => {
             <button class="btn btn-primary" type="submit"> Cadastrar </button>
         </form>
 
-        <div v-for="discipline in disciplines" :key="discipline.id" class="form-check d-flex justify-content-end">
+        <div v-for="discipline in disciplines" :key="discipline.id" class="form-check d-flex">
             <input v-model="form.disciplinesId" class="form-check-input" type="checkbox" :value="discipline.id" id="flexCheckDefault">
             <label class="form-check-label" for="flexCheckDefault">
                 {{discipline.name}}
