@@ -9,8 +9,10 @@ const formObject = {
 
 // const subjects = [{}] // TIPAR
 
+// PODERIA CADASTRAR MULTIPLOS
+
 const form = ref({...formObject})
-const subjects = ref([{}]);
+const disciplines = ref([{}]);
 
 const request = async () => {
     const { name, disciplineId } = form.value
@@ -23,14 +25,14 @@ const request = async () => {
     form.value = { ...formObject }
 }
 
-const allSubjects = async () => {
-    const { data } = await axios.get("/subject");
-    subjects.value = data
+const allDisciplines = async () => {
+    const { data } = await axios.get("/discipline");
+    disciplines.value = data
     console.log(data)
 }
 
 onMounted(()=> {
-    allSubjects() // CACHEAR ISSO
+    allDisciplines() // CACHEAR ISSO
 })
 
 </script>
@@ -40,7 +42,7 @@ onMounted(()=> {
         <form class="d-flex justify-content-center" @submit.prevent="request" method="POST">
             <select v-model="form.disciplineId" class="form-select me-2 w-25">
                 <option selected>Selecione uma disciplina</option>
-                <option v-for="subject in subjects" :key="subject.id" :value="subject.id"> {{subject.name}} </option>
+                <option v-for="discipline in disciplines" :key="discipline.id" :value="discipline.id"> {{discipline.name}} </option>
             </select>
             <input class="form-control me-2 w-25" v-model="form.name" type="text" name="name" placeholder="Descrição" >
             <button class="btn btn-primary" type="submit"> Cadastrar </button>
