@@ -1,0 +1,151 @@
+<script setup lang="ts">
+import { ref, onMounted } from "vue"
+import axios from "@/utils/axios"
+
+const formObject = { // NÃO MUDAR DIRETAMENTE
+    alternatives: [{
+        alternative: "A",
+        title: ""
+    }],
+    name: "",
+    answer: "",
+    subjectsId: [],
+    disciplineId: "Selecione uma disciplina",
+    vestibularId: "Selecione um vestibular"
+}
+
+
+const form = ref({...formObject});
+
+// const alternatives = ref([{
+//     alternative: "A",
+//     title: ""
+// }]);
+
+const subjects = ref([]); // ELE DETECTA UM ELEMENTO, ENTAO BOM TIRAR O {}
+const disciplines = ref([{}]);
+const vestibulars = ref([{}]);
+
+const request = async () => {
+    const { name, answer, alternatives, subjectsId, disciplineId, vestibularId } = form.value
+    
+    await axios.post("/question", {
+        name,
+        answer,
+        alternatives,
+        subjectsId,
+        disciplineId,
+        vestibularId
+    });
+
+    form.value = { ...formObject }
+}
+
+const disciplineSubjects = async () => {
+    if(typeof form.value.disciplineId === "string") {
+        subjects.value = []// SE REFERENCIA O FORM OBJECT, ELE PODIA COPIAR
+        // EVITAR DE CHAMAR REQUISIÇÃO DESNECESSARIA
+        return
+    }
+    const { data } = await axios.get(`/subject?disciplineId=${form.value.disciplineId}`);
+    subjects.value = data
+    // console.log(data)
+}
+
+const allDisciplines = async () => {
+    const { data } = await axios.get("/discipline");
+    disciplines.value = data
+    // console.log(data)
+}
+
+const allVestibulars = async () => {
+    const { data } = await axios.get("/vestibular");
+    vestibulars.value = data
+    // console.log(data)
+}
+
+const addAlternative = (index: number) => {
+    // TEMPORARIO
+    const letters = ["A", "B", "C", "D", "E"] //USAR UM ARRAY PRA ACESSAR A POSIÇÃO, MAIS FACIL QUE USAR UM DE OBJETOS
+
+    const filterLetter = letters.find(l => {
+        const finded = form.value.alternatives.filter(e => e.alternative === l);
+        if(!finded[0]) return l
+    }) as string;
+
+    form.value.alternatives.push({
+        alternative: filterLetter,
+        title: ""
+    });
+}
+
+const removeAlternative = (index: number) => {
+    const element = form.value.alternatives.filter((e, i) => i !== index);
+    form.value.alternatives = element // PODE USAR SPREAD TAMBÉM
+}
+onMounted(()=> {
+    // NESSE CASO, SERIA BOM GENERALIZAR O METODO
+    // allSubjects();
+    allVestibulars();
+    allDisciplines();
+});
+
+</script>
+
+<template>
+    <div>
+        <form @submit.prevent="request" method="POST">
+            <div class="d-flex justify-content-center">
+                <select v-model="form.vestibularId" class="form-select me-2 w-25">
+                    <option selected>Selecione um vestibular</option>
+                    <option v-for="vestibular in vestibulars" :key="vestibular.id" :value="vestibular.id"> {{vestibular.name}} </option>
+                </select>
+
+                <select @change="disciplineSubjects" v-model="form.disciplineId" class="form-select me-2 w-25">
+                    <option selected>Selecione uma disciplina</option>
+                    <option v-for="discipline in disciplines" :key="discipline.id" :value="discipline.id"> {{discipline.name}} </option>
+                </select>
+                
+                <div class="dropdown me-2">
+                    <button :disabled="!subjects[0]" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Assuntos
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li v-for="subject in subjects" :key="subject.id">
+                            <div class="form-check d-flex">
+                                <input v-model="form.subjectsId" class="form-check-input" type="checkbox" :value="subject.id" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{subject.name}}
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <input class="form-control me-2 w-25" v-model="form.name" type="text" name="name" placeholder="Nome" >
+                <input class="form-control me-2 w-25" v-model="form.answer" type="text" name="answer" placeholder="Resposta" >
+                <button class="btn btn-primary" type="submit"> Cadastrar </button>
+            </div>
+
+            <div class="d-flex flex-column w-50">
+                <div v-for="(alternative, index) in form.alternatives" :key="index">
+
+                    <input 
+                    class="form-control me-2 w-25" 
+                    v-model="form.alternatives[index].title" 
+                    type="text" name="alternative" 
+                    :placeholder="`Alternativa: ${alternative.alternative}`"
+                    >
+                    <button type="button" class="btn btn-danger w-25" @click="removeAlternative(index)"> Remover </button>
+
+                </div>
+
+                <button type="button" class="btn btn-primary w-25" @click="addAlternative"> Adicionar </button>
+            </div>
+
+        </form>
+    </div>
+</template>
+
+<style>
+
+</style>
