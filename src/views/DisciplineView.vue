@@ -22,9 +22,9 @@ const request = async () => {
 
 <template>
     <div>
-        <form class="d-flex justify-content-center" @submit.prevent="request" method="POST">
-            <input class="form-control me-2 w-25" v-model="form.name" type="text" name="name" placeholder="Nome" >
-            <button class="btn btn-primary" type="submit"> Cadastrar </button>
+        <form class="d-flex flex-column align-items-center" @submit.prevent="request" method="POST">
+            <input class="form-control mt-2 w-25" v-model="form.name" type="text" name="name" placeholder="Nome" >
+            <button class="btn btn-primary mt-2" type="submit"> Cadastrar </button>
         </form>
     </div>
 </template>

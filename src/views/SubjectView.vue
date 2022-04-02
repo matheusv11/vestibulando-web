@@ -39,13 +39,13 @@ onMounted(()=> {
 
 <template>
     <div>
-        <form class="d-flex justify-content-center" @submit.prevent="request" method="POST">
-            <select v-model="form.disciplineId" class="form-select me-2 w-25">
+        <form class="d-flex flex-column align-items-center" @submit.prevent="request" method="POST">
+            <select v-model="form.disciplineId" class="form-select mt-2 w-25">
                 <option selected>Selecione uma disciplina</option>
                 <option v-for="discipline in disciplines" :key="discipline.id" :value="discipline.id"> {{discipline.name}} </option>
             </select>
-            <input class="form-control me-2 w-25" v-model="form.name" type="text" name="name" placeholder="Descrição" >
-            <button class="btn btn-primary" type="submit"> Cadastrar </button>
+            <input class="form-control mt-2 w-25" v-model="form.name" type="text" name="name" placeholder="Descrição" >
+            <button class="btn btn-primary mt-2" type="submit"> Cadastrar </button>
         </form>
     </div>
 </template>

@@ -94,53 +94,52 @@ onMounted(()=> {
 
 <template>
     <div>
-        <form @submit.prevent="request" method="POST">
-            <div class="d-flex justify-content-center">
-                <select v-model="form.vestibularId" class="form-select me-2 w-25">
-                    <option selected>Selecione um vestibular</option>
-                    <option v-for="vestibular in vestibulars" :key="vestibular.id" :value="vestibular.id"> {{vestibular.name}} </option>
-                </select>
+        <form class="d-flex flex-column align-items-center" @submit.prevent="request" method="POST">
+            <select v-model="form.vestibularId" class="form-select mt-2 w-25">
+                <option selected>Selecione um vestibular</option>
+                <option v-for="vestibular in vestibulars" :key="vestibular.id" :value="vestibular.id"> {{vestibular.name}} </option>
+            </select>
 
-                <select @change="disciplineSubjects" v-model="form.disciplineId" class="form-select me-2 w-25">
-                    <option selected>Selecione uma disciplina</option>
-                    <option v-for="discipline in disciplines" :key="discipline.id" :value="discipline.id"> {{discipline.name}} </option>
-                </select>
-                
-                <div class="dropdown me-2">
-                    <button :disabled="!subjects[0]" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        Assuntos
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li v-for="subject in subjects" :key="subject.id">
-                            <div class="form-check d-flex">
-                                <input v-model="form.subjectsId" class="form-check-input" type="checkbox" :value="subject.id" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    {{subject.name}}
-                                </label>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <input class="form-control me-2 w-25" v-model="form.name" type="text" name="name" placeholder="Nome" >
-                <input class="form-control me-2 w-25" v-model="form.answer" type="text" name="answer" placeholder="Resposta" >
-                <button class="btn btn-primary" type="submit"> Cadastrar </button>
+            <select @change="disciplineSubjects" v-model="form.disciplineId" class="form-select mt-2 w-25">
+                <option selected>Selecione uma disciplina</option>
+                <option v-for="discipline in disciplines" :key="discipline.id" :value="discipline.id"> {{discipline.name}} </option>
+            </select>
+            
+            <div class="dropdown mt-2">
+                <button :disabled="!subjects[0]" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Assuntos
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li v-for="subject in subjects" :key="subject.id">
+                        <div class="form-check d-flex">
+                            <input v-model="form.subjectsId" class="form-check-input" type="checkbox" :value="subject.id" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                {{subject.name}}
+                            </label>
+                        </div>
+                    </li>
+                </ul>
             </div>
+            <input class="form-control mt-2 w-25" v-model="form.name" type="text" name="name" placeholder="Nome" >
+            <input class="form-control mt-2 w-25" v-model="form.answer" type="text" name="answer" placeholder="Resposta" >
 
-            <div class="d-flex flex-column w-50">
+            <section>
                 <div v-for="(alternative, index) in form.alternatives" :key="index">
 
                     <input 
-                    class="form-control me-2 w-25" 
+                    class="form-control mt-2" 
                     v-model="form.alternatives[index].title" 
                     type="text" name="alternative" 
                     :placeholder="`Alternativa: ${alternative.alternative}`"
                     >
-                    <button type="button" class="btn btn-danger w-25" @click="removeAlternative(index)"> Remover </button>
+                    <button type="button" class="btn btn-danger mt-2" @click="removeAlternative(index)"> Remover </button>
 
                 </div>
 
-                <button type="button" class="btn btn-primary w-25" @click="addAlternative"> Adicionar </button>
-            </div>
+                <button type="button" class="btn btn-primary mt-2" @click="addAlternative"> Adicionar </button>
+            </section>
+            
+            <button class="btn btn-primary mt-2" type="submit"> Cadastrar </button>
 
         </form>
     </div>

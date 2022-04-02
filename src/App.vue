@@ -22,6 +22,11 @@ const loadingState = useLoadingStore()
 </template>
 
 <style>
-/* CSS ESCOPADO */
+/* CSS GLOBAL */
+
+/* html, body, #app {
+  height: 100%;
+  margin: 0;
+} */
 
 </style>
