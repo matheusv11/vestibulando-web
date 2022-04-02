@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import { useMessageStore } from "../stores/message";
+import { useMessageStore } from "../stores/message"; // MELHORAR OS STORES
+import { useTokenStore } from "../stores/token";
 
 // import RegisterView from '../views/RegisterView.vue' // POR SER IMPORTADO AQUI, ANTES DA ROTA, O PINIA QUEBRA
 
@@ -40,6 +41,9 @@ const router = createRouter({
     {
       path: '/vestibular',
       name: 'vestibular',
+      meta: {
+        admin: true
+      },
       component: () => import('../views/VestibularView.vue')
     },
     {
@@ -50,6 +54,7 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
+      // beforeEnter // PODERIAR CONTROLAR ASSIM
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -60,12 +65,30 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => { // VALIDAR ROTAS // SE TEM TOKEN OU NÃO
+  // PODERIA SER OS BEFORE ENTER TAMBEM
+  // FAZER IF NA NAVBAR
+  // REDIRECIONAR AO LOGAR OU CADASTRAR
+
+  // console.log("DE", from);
+  // console.log("ATE", to);
   // validar refresh token a cada requisição ou mudança de pagina
   const messageState = useMessageStore() // OU UM ACTION COM TIMEOUT PRA LIMPAR
+  const tokenState = useTokenStore()
+
   messageState.message = {
     type: "",
     text: ""
   }
+  
+  // VALIDAÇÃO DE ADM
+  // if(to.meta.admin){ // NÃO QUEBRA, MESMO NAO TENDO O META ADMIN
+    
+  //   if(!tokenState.token){
+  //     return next("/")
+  //   }
+
+  // }
+  
   // O BEFORE EACH TEM QUE SER SEPARADO DO CREATE ROUTER
   // console.log("Para", to)
   // console.log("De", from)
