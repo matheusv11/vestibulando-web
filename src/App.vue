@@ -13,7 +13,8 @@ const loadingState = useLoadingStore()
 <template>
   <header>
       <Navbar/>
-      <NotifyComponent/>
+      <!-- O IF DA MENSAGEM PODERIA SER AQUI FORA -->
+      <NotifyComponent/> 
       <LoadingComponent v-if="loadingState.loading"/>
   </header>
 

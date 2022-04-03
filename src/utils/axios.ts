@@ -29,7 +29,8 @@ axiosConfig.interceptors.request.use(config => { // LIMPAR ESTADOS A CADA REQUES
 
 axiosConfig.interceptors.response.use((response: AxiosResponse) => {
     console.log('Response', response)
-
+    
+    // SÓ SETAR QUANDO TIVER MENSAGEM
     messageState.message = { // MELHORAR A SETAGEM NO PINIA, USAR MAIS ACTIONS
         type: "success",
         text: response.data.message
