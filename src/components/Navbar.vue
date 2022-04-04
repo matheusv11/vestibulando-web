@@ -31,6 +31,9 @@
           <li class="nav-item">
             <RouterLink class="nav-link" active-class="active" to="/questao"> Cadastrar Questão </RouterLink>
           </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" active-class="active" to="/questoes"> Questões </RouterLink>
+          </li>
         </ul>
 
         <form class="d-flex">

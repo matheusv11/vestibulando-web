@@ -10,7 +10,10 @@ const loadingState = useLoadingStore()
 const messageState = useMessageStore()
 
 const axiosConfig = axios.create({
-    baseURL: "http://localhost:3030"
+    baseURL: "http://localhost:3030",
+    // headers: {
+    //     Authorization: `Bearer ${tokenState.token}` // CUIDAR COM OS TIPOS DE TOKEN
+    // }
 });
 
 axiosConfig.interceptors.request.use(config => { // LIMPAR ESTADOS A CADA REQUEST?

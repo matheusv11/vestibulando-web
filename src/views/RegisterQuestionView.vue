@@ -7,7 +7,7 @@ const formObject = { // NÃO MUDAR DIRETAMENTE
         alternative: "A",
         title: ""
     }],
-    name: "",
+    title: "",
     answer: "",
     subjectsId: [],
     disciplineId: "Selecione uma disciplina",
@@ -27,10 +27,10 @@ const disciplines = ref([{}]);
 const vestibulars = ref([{}]);
 
 const request = async () => {
-    const { name, answer, alternatives, subjectsId, disciplineId, vestibularId } = form.value
+    const { title, answer, alternatives, subjectsId, disciplineId, vestibularId } = form.value
     
     await axios.post("/question", {
-        name,
+        title,
         answer,
         alternatives,
         subjectsId,
@@ -120,7 +120,7 @@ onMounted(()=> {
                     </li>
                 </ul>
             </div>
-            <input class="form-control mt-2 w-25" v-model="form.name" type="text" name="name" placeholder="Nome" >
+            <input class="form-control mt-2 w-25" v-model="form.title" type="text" name="name" placeholder="Enunciado" >
             <input class="form-control mt-2 w-25" v-model="form.answer" type="text" name="answer" placeholder="Resposta" >
 
             <section>

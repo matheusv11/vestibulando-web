@@ -48,8 +48,13 @@ const router = createRouter({
     },
     {
       path: '/questao',
-      name: 'question',
-      component: () => import('../views/QuestionView.vue')
+      name: 'registerQuestion',
+      component: () => import('../views/RegisterQuestionView.vue')
+    },
+    {
+      path: '/questoes',
+      name: 'questions',
+      component: () => import('../views/QuestionsView.vue')
     },
     {
       path: '/about',
