@@ -1,6 +1,40 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import axios from "@/utils/axios"
+import Editor from "@tinymce/tinymce-vue";
+
+const initEditor = {
+  height: 500,
+  plugins: 'image',
+  file_picker_types: 'image',
+  automatic_uploads: true,
+  file_picker_callback: function (cb: any, value: any, meta: any) {
+    // OLHAR DOC DO TINY PRA MELHORAR ISSO
+    // DEIXAR NO PADRÃO DO FRAMEWORK NO CASO
+    var input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+
+    input.onchange = function () {
+      var file = this.files[0];
+
+      var reader = new FileReader();
+      reader.onload = function () {
+
+        var id = 'blobid' + (new Date()).getTime();
+        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+        var base64 = reader.result.split(',')[1];
+        var blobInfo = blobCache.create(id, file, base64);
+        blobCache.add(blobInfo);
+
+        cb(blobInfo.blobUri(), { title: file.name });
+      };
+      reader.readAsDataURL(file);
+    };
+
+    input.click();
+  }
+}
 
 const formObject = { // NÃO MUDAR DIRETAMENTE
     alternatives: [{
@@ -22,7 +56,7 @@ const form = ref({...formObject});
 //     title: ""
 // }]);
 
-const subjects = ref([]); // ELE DETECTA UM ELEMENTO, ENTAO BOM TIRAR O {}
+const subjects = ref([]);
 const disciplines = ref([{}]);
 const vestibulars = ref([{}]);
 
@@ -83,6 +117,7 @@ const removeAlternative = (index: number) => {
     const element = form.value.alternatives.filter((e, i) => i !== index);
     form.value.alternatives = element // PODE USAR SPREAD TAMBÉM
 }
+
 onMounted(()=> {
     // NESSE CASO, SERIA BOM GENERALIZAR O METODO
     // allSubjects();
@@ -120,7 +155,17 @@ onMounted(()=> {
                     </li>
                 </ul>
             </div>
-            <input class="form-control mt-2 w-25" v-model="form.title" type="text" name="name" placeholder="Enunciado" >
+            <!-- <input class="form-control mt-2 w-25" v-model="form.title" type="text" name="name" placeholder="Enunciado" > -->
+
+
+                <form class="mt-5" method="POST">
+                    <Editor 
+                    api-key="no-api-key"
+                    cloud-channel="5-dev"
+                    v-model="form.title"
+                    :init="initEditor"
+                    />
+                </form>
             <input class="form-control mt-2 w-25" v-model="form.answer" type="text" name="answer" placeholder="Resposta" >
 
             <section>

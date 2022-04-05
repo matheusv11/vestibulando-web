@@ -71,7 +71,7 @@ onMounted(()=> {
 
             <div class="card-body">
 
-                <p class="card-text">{{question.title}}</p>
+                <p class="card-text" v-html="question.title"/>
                 
                 <div v-for="(alternative, index) in JSON.parse(question.alternatives)" :key="index" class="form-check mt-2">
                     <input v-model="form.selected" :value="alternative.alternative" role="button" class="form-check-input" type="radio" :name="`flexRadioDefault-${question.id}`">
