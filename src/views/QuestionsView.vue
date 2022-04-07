@@ -77,7 +77,7 @@ onMounted(()=> {
                     <input v-model="form.selected" :value="alternative.alternative" role="button" class="form-check-input" type="radio" :name="`flexRadioDefault-${question.id}`">
 
                     <label class="form-check-label" for="flexRadioDefault">
-                        <b>{{alternative.alternative}})</b> {{alternative.title}}
+                        <b>{{alternative.alternative}})</b> <span v-html="alternative.title"/>
                     </label>
 
                 </div>

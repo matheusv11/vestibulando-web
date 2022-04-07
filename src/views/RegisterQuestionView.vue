@@ -3,12 +3,7 @@ import { ref, onMounted } from "vue"
 import axios from "@/utils/axios"
 import Editor from "@tinymce/tinymce-vue";
 
-const initEditor = {
-  height: 500,
-  plugins: 'image',
-  file_picker_types: 'image',
-  automatic_uploads: true,
-  file_picker_callback: function (cb: any, value: any, meta: any) {
+function pickerCallBack (cb: any, value: any, meta: any) {
     // OLHAR DOC DO TINY PRA MELHORAR ISSO
     // DEIXAR NO PADRÃO DO FRAMEWORK NO CASO
     var input = document.createElement('input');
@@ -16,10 +11,10 @@ const initEditor = {
     input.setAttribute('accept', 'image/*');
 
     input.onchange = function () {
-      var file = this.files[0];
+    var file = this.files[0];
 
-      var reader = new FileReader();
-      reader.onload = function () {
+    var reader = new FileReader();
+    reader.onload = function () {
 
         var id = 'blobid' + (new Date()).getTime();
         var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
@@ -28,12 +23,29 @@ const initEditor = {
         blobCache.add(blobInfo);
 
         cb(blobInfo.blobUri(), { title: file.name });
-      };
-      reader.readAsDataURL(file);
+    };
+    reader.readAsDataURL(file);
     };
 
     input.click();
-  }
+}
+
+const initEditor = {
+    question: {
+        height: 500,
+        plugins: 'image',
+        file_picker_types: 'image',
+        automatic_uploads: true,
+        file_picker_callback: pickerCallBack // SEM PARAMETRO, JA QUE PASSA POR AQUI
+    },
+
+    alternative: {
+        height: 200,
+        plugins: 'image',
+        file_picker_types: 'image',
+        automatic_uploads: true,
+        file_picker_callback: pickerCallBack
+    }
 }
 
 const formObject = { // NÃO MUDAR DIRETAMENTE
@@ -163,20 +175,28 @@ onMounted(()=> {
                     api-key="no-api-key"
                     cloud-channel="5-dev"
                     v-model="form.title"
-                    :init="initEditor"
+                    :init="initEditor.question"
                     />
                 </form>
             <input class="form-control mt-2 w-25" v-model="form.answer" type="text" name="answer" placeholder="Resposta" >
 
             <section>
                 <div v-for="(alternative, index) in form.alternatives" :key="index">
-
+<!-- 
                     <input 
                     class="form-control mt-2" 
                     v-model="form.alternatives[index].title" 
                     type="text" name="alternative" 
                     :placeholder="`Alternativa: ${alternative.alternative}`"
-                    >
+                    > -->
+                    <label for="Editor"> {{alternative.alternative}} </label>
+                    <Editor
+                    class="form-control mt-2"
+                    api-key="no-api-key"
+                    cloud-channel="5-dev"
+                    v-model="form.alternatives[index].title"
+                    :init="initEditor.alternative"
+                    />
                     <button type="button" class="btn btn-danger mt-2" @click="removeAlternative(index)"> Remover </button>
 
                 </div>
