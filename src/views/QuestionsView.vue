@@ -5,20 +5,19 @@ import { useTokenStore } from "@/stores/token";
 
 const tokenState = useTokenStore();
 
-const formObject = {
-    selected: ""
-}
+const formObject: any = [] // SOLUÇÃO TEMPORÁRIA
 
-const form = ref({...formObject});
+const form = ref([...formObject]);
 
 const subjects = ref([]);
 const disciplines = ref([{}]); // USAR REF DE OBJETOS COMO NO REACT?
 const vestibulars = ref([{}]);
 const questions = ref([]);
 
-const answer = async (questionId: number) => {
-    const { selected } = form.value
-    
+const answer = async (questionId: number, indexQuestion: number) => {
+    // const { selected } = form.value
+    const selected = form.value[indexQuestion];
+
     await axios.post("/answer", {
         selected,
         questionId
@@ -28,7 +27,8 @@ const answer = async (questionId: number) => {
         }
     });
 
-    form.value = { ...formObject }
+    // NÃO LIMPAR A MARCADA
+    // form.value = { ...formObject }
 }
 
 const allDisciplines = async () => {
@@ -56,8 +56,8 @@ onMounted(()=> {
 
 <template>
     <div class="mx-auto" style="width: 50%;">
-        
-        <div class="card mt-3" v-for="question in questions" :key="question.id">
+        {{form}}
+        <div class="card mt-3" v-for="(question, indexQuestion) in questions" :key="question.id">
             
             <div class="card-header d-flex justify-content-between">
                 <h5> {{question.discipline.name}} </h5> 
@@ -73,8 +73,8 @@ onMounted(()=> {
 
                 <p class="card-text" v-html="question.title"/>
                 
-                <div v-for="(alternative, index) in JSON.parse(question.alternatives)" :key="index" class="form-check mt-2">
-                    <input v-model="form.selected" :value="alternative.alternative" role="button" class="form-check-input" type="radio" :name="`flexRadioDefault-${question.id}`">
+                <div v-for="(alternative, indexAlternative) in JSON.parse(question.alternatives)" :key="indexAlternative" class="form-check mt-2">
+                    <input v-model="form[indexQuestion]" :value="alternative.alternative" role="button" class="form-check-input" type="radio" :name="`flexRadioDefault-${question.id}`">
 
                     <label class="form-check-label" for="flexRadioDefault">
                         <b>{{alternative.alternative}})</b> <span v-html="alternative.title"/>
@@ -82,7 +82,7 @@ onMounted(()=> {
 
                 </div>
 
-                <form @submit.prevent="answer(question.id)" method="POST">
+                <form @submit.prevent="answer(question.id, indexQuestion)" method="POST">
                     <button class="btn btn-primary mt-3"> Responder </button>
                 </form>
                 
