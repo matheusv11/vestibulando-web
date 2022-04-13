@@ -23,6 +23,9 @@ const loadingState = useLoadingStore()
 </template>
 
 <style>
+.tox-notifications-container {
+  display: none !important;
+}
 /* CSS GLOBAL */
 
 /* html, body, #app {
