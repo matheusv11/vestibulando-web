@@ -57,6 +57,11 @@ const router = createRouter({
       component: () => import('../views/QuestionsView.vue')
     },
     {
+      path: '/vestibular-proprio',
+      name: 'ownVestibular',
+      component: () => import('../views/OwnVestibularView.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // beforeEnter // PODERIAR CONTROLAR ASSIM
@@ -73,6 +78,7 @@ router.beforeEach((to, from, next) => { // VALIDAR ROTAS // SE TEM TOKEN OU NÃO
   // PODERIA SER OS BEFORE ENTER TAMBEM
   // FAZER IF NA NAVBAR
   // REDIRECIONAR AO LOGAR OU CADASTRAR
+  // COLOCAR IF PRA REDIRECIONAR CASO TENTE ACESSAR UMA ROTA QUE JA FOI USADA, NO CASO REGISTRO E LOGIN
 
   // console.log("DE", from);
   // console.log("ATE", to);

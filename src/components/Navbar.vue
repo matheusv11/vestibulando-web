@@ -34,6 +34,9 @@
           <li class="nav-item">
             <RouterLink class="nav-link" active-class="active" to="/questoes"> Questões </RouterLink>
           </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" active-class="active" to="/vestibular-proprio"> Próprio vestibular </RouterLink>
+          </li>
         </ul>
 
         <form class="d-flex">
