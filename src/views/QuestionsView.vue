@@ -30,6 +30,26 @@ const answer = async (questionId: number, indexQuestion: number) => {
 
 }
 
+const favorite = async (questionId: number) => {
+    
+    await axios.post("/favorite", {
+        questionId
+    }, {
+        headers: {
+            Authorization: `Bearer ${tokenState.token}` // CUIDAR COM OS TIPOS DE TOKEN
+        }
+    });
+}
+
+const removeFavorite = async (questionId: number) => {
+    
+    await axios.delete(`/favorite/${questionId}`,{
+        headers: {
+            Authorization: `Bearer ${tokenState.token}` // CUIDAR COM OS TIPOS DE TOKEN
+        }
+    });
+}
+
 const allDisciplines = async () => {
     const { data } = await axios.get("/discipline");
     disciplines.value = data
@@ -41,7 +61,11 @@ const allVestibulars = async () => {
 }
 
 const allQuestions = async () => {
-    const { data } = await axios.get("/question");
+    const { data } = await axios.get("/question", {
+        headers: { // CASO LOGADO
+            Authorization: `Bearer ${tokenState.token}` // CUIDAR COM OS TIPOS DE TOKEN
+        }
+    });
     questions.value = data
 }
 
@@ -82,7 +106,7 @@ const verifyAnswer = (answer: string, indexQuestion: number, alternative: string
                 <div v-for="(alternative, indexAlternative) in JSON.parse(question.alternatives)" :key="indexAlternative" class="form-check mt-2">
                     <input v-model="form[indexQuestion]" :value="alternative.alternative" role="button" class="form-check-input" type="radio" :name="`flexRadioDefault-${question.id}`">
 
-                    <label class="form-check-label" for="flexRadioDefault">
+                    <label class="form-check-label d-flex" for="flexRadioDefault">
                         <b>{{alternative.alternative}})</b> <span :class="verifyAnswer(question.answer, indexQuestion, alternative.alternative)" v-html="alternative.title"/>
                     </label>
 
@@ -90,6 +114,10 @@ const verifyAnswer = (answer: string, indexQuestion: number, alternative: string
 
                 <form @submit.prevent="answer(question.id, indexQuestion)" method="POST">
                     <button class="btn btn-primary mt-3"> Responder </button>
+                </form>
+
+                <form v-if="tokenState.token" @submit.prevent="!question.favorite_questions[0] ? favorite(question.id): removeFavorite(question.favorite_questions[0].id)" method="POST">
+                    <button class="btn btn-primary mt-3"> {{!question.favorite_questions[0] ? "Favoritar" : "Desfavoritar"}} </button>
                 </form>
                 
             </div>
