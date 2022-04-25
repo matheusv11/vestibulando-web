@@ -7,6 +7,10 @@ const tokenState = useTokenStore();
 // defineProps<{
 //   msg: string
 // }>()
+
+const logout = () => {
+  tokenState.setToken("");
+}
 </script>
 
 <template>
@@ -42,10 +46,9 @@ const tokenState = useTokenStore();
           </li>
         </ul>
 
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <div class="d-flex">
+          <button v-if="tokenState.token" @click="logout" class="btn btn-danger" > Logout </button>
+        </div>
 
       </div>
     </div>
