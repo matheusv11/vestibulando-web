@@ -2,6 +2,9 @@
 import { ref } from "vue"
 import axios from "@/utils/axios"
 import { useTokenStore } from "@/stores/token"
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const tokenState = useTokenStore();
 
@@ -21,6 +24,10 @@ const request = async () => {
     }).then(({ data }) => {
         tokenState.setToken(data.acessToken)
         // localStorage.setItem("acessToken", data.acessToken); // USAR NO PINIA
+    });
+
+    router.push({
+        name: "home"
     });
 
     form.value = { ...formObject }

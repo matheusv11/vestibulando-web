@@ -16,16 +16,17 @@ const router = createRouter({
     {
       path: '/cadastro',
       name: 'register',
+      meta: {
+        validate: true
+      },
       component: () => import('../views/RegisterView.vue')
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue')
-    },
-    {
-      path: '/login',
-      name: 'login',
+      meta: {
+        validate: true
+      },
       component: () => import('../views/LoginView.vue')
     },
     {
@@ -89,6 +90,12 @@ router.beforeEach((to, from, next) => { // VALIDAR ROTAS // SE TEM TOKEN OU NÃO
   messageState.message = {
     type: "",
     text: ""
+  }
+
+  if(to.meta.validate){
+    
+    if(tokenState.token) return next("/")
+
   }
   
   // VALIDAÇÃO DE ADM

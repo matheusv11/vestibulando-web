@@ -1,5 +1,8 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
+import { useTokenStore } from "@/stores/token";
+
+const tokenState = useTokenStore();
 
 // defineProps<{
 //   msg: string
@@ -14,10 +17,10 @@
 
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" aria-current="page" to="/cadastro"> Registrar-se </RouterLink>
+            <RouterLink class="nav-link" v-if="!tokenState.token" active-class="active" aria-current="page" to="/cadastro"> Registrar-se </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" to="/login"> Login </RouterLink>
+            <RouterLink class="nav-link" v-if="!tokenState.token" active-class="active" to="/login"> Login </RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link" active-class="active" to="/disciplina"> Cadastrar Disciplina </RouterLink>

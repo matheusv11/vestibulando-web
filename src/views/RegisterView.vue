@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import axios from "@/utils/axios"
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const formObject = {
     name: "",
@@ -23,6 +26,11 @@ const request = async () => {
         name,
         email,
         password
+    });
+
+    router.push({
+        // path: "/login",
+        name: "login"
     });
 
     form.value = { ...formObject }
