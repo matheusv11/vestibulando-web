@@ -32,22 +32,32 @@ const answer = async (questionId: number, indexQuestion: number) => {
 
 const favorite = async (questionId: number) => {
     
-    await axios.post("/favorite", {
+    const response = await axios.post("/favorite", {
         questionId
     }, {
         headers: {
             Authorization: `Bearer ${tokenState.token}` // CUIDAR COM OS TIPOS DE TOKEN
         }
     });
+
+    const question = questions.value.find((q: any) => q.id === questionId ) as any;
+    // NÃO PRECISAR SOBRESCREVER ARRAY COMO NO REACT
+    question.favorite_questions[0] = { id: response.data.id } // APENAS PARA NIVEL DE VISUALIZAÇÃO
 }
 
-const removeFavorite = async (questionId: number) => {
+const removeFavorite = async (favoriteId: number) => {
     
-    await axios.delete(`/favorite/${questionId}`,{
+    await axios.delete(`/favorite/${favoriteId}`,{
         headers: {
             Authorization: `Bearer ${tokenState.token}` // CUIDAR COM OS TIPOS DE TOKEN
         }
     });
+
+    const question = questions.value.find((q: any) => q.favorite_questions[0]?.id === favoriteId ) as any; // PARA IMPEDIR DE PASSAR O QUESTION ID, PERCORRO TODOS ARRAY E PEGO O FAVORITE QUESTION
+
+    console.log("Questão a ser deletada", question);
+    // NÃO PRECISAR SOBRESCREVER ARRAY COMO NO REACT
+    question.favorite_questions = [] // APENAS PARA NIVEL DE VISUALIZAÇÃO
 }
 
 const allDisciplines = async () => {
@@ -66,6 +76,7 @@ const allQuestions = async () => {
             Authorization: `Bearer ${tokenState.token}` // CUIDAR COM OS TIPOS DE TOKEN
         }
     });
+
     questions.value = data
 }
 
@@ -96,7 +107,6 @@ const verifyAnswer = (answer: string, indexQuestion: number, alternative: string
 
                 <b> Assuntos: {{ question.question_subjects.map(e => e.subject.name).join(", ") }} </b>
 
-                <!-- FAVORITAR -->
             </div>
 
             <div class="card-body">
@@ -117,7 +127,7 @@ const verifyAnswer = (answer: string, indexQuestion: number, alternative: string
                 </form>
 
                 <form v-if="tokenState.token" @submit.prevent="!question.favorite_questions[0] ? favorite(question.id): removeFavorite(question.favorite_questions[0].id)" method="POST">
-                    <button class="btn btn-primary mt-3"> {{!question.favorite_questions[0] ? "Favoritar" : "Desfavoritar"}} </button>
+                    <button :class="`btn ${!question.favorite_questions[0] ? 'btn-warning' : 'btn-danger'} mt-3`"> {{!question.favorite_questions[0] ? "Favoritar" : "Desfavoritar"}} </button>
                 </form>
                 
             </div>
