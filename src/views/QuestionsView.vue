@@ -18,9 +18,27 @@ const answer = async (questionId: number, indexQuestion: number) => {
     const selected = form.value[indexQuestion];
 
     if(tokenState.token) {
-        await axios.post("/answer", {
+        const response = await axios.post("/answer", {
             selected,
             questionId
+        },{
+            headers: {
+                Authorization: `Bearer ${tokenState.token}` // CUIDAR COM OS TIPOS DE TOKEN
+            }
+        });
+
+        const question = questions.value.find((q: any) => q.id === questionId ) as any;
+        question.answers[0] = { id: response.data.id } 
+    }
+
+}
+
+const updateAnswer = async (answerId: number, indexQuestion: number) => {
+    const selected = form.value[indexQuestion];
+
+    if(tokenState.token) { // PODERIA ATÉ REMOVER, JA QUE NÃO EXISTIRÁ PARA NÃO LOGADOS
+        await axios.patch(`/answer/${answerId}`, { // USAR PARAMS
+            selected
         },{
             headers: {
                 Authorization: `Bearer ${tokenState.token}` // CUIDAR COM OS TIPOS DE TOKEN
@@ -54,8 +72,6 @@ const removeFavorite = async (favoriteId: number) => {
     });
 
     const question = questions.value.find((q: any) => q.favorite_questions[0]?.id === favoriteId ) as any; // PARA IMPEDIR DE PASSAR O QUESTION ID, PERCORRO TODOS ARRAY E PEGO O FAVORITE QUESTION
-
-    console.log("Questão a ser deletada", question);
     // NÃO PRECISAR SOBRESCREVER ARRAY COMO NO REACT
     question.favorite_questions = [] // APENAS PARA NIVEL DE VISUALIZAÇÃO
 }
@@ -122,8 +138,8 @@ const verifyAnswer = (answer: string, indexQuestion: number, alternative: string
 
                 </div>
 
-                <form @submit.prevent="answer(question.id, indexQuestion)" method="POST">
-                    <button class="btn btn-primary mt-3"> Responder </button>
+                <form @submit.prevent="!question.answers[0] ? answer(question.id, indexQuestion) : updateAnswer(question.answers[0].id, indexQuestion)" method="POST">
+                    <button :class="`btn ${!question.answers[0] ? 'btn-primary' : 'btn-success'} mt-3`"> {{!question.answers[0] ? "Responder" : "Atualizar"}} </button>
                 </form>
 
                 <form v-if="tokenState.token" @submit.prevent="!question.favorite_questions[0] ? favorite(question.id): removeFavorite(question.favorite_questions[0].id)" method="POST">
