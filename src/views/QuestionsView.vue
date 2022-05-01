@@ -102,9 +102,9 @@ onMounted(()=> {
     allQuestions();
 });
 
-const verifyAnswer = (answer: string, indexQuestion: number, alternative: string) => {
+const verifyAnswer = (answer: string, indexQuestion: number, alternative: string, selectedAnswer?: string) => {
     // VERIFICAR APENAS AO RESPONDER
-    const selected = form.value[indexQuestion];
+    const selected = form.value[indexQuestion] || selectedAnswer; // ISSO VALE APENAS PARA O METODO QUE NÃO ENVOLVE ESPERAR O BOTAO APERTAR, POIS ASSIM ATUALIZAR DIRETO
     if(!selected) return;
     if(alternative === answer) return "bg-success"
     if(alternative !== answer && selected !== answer) return "bg-danger"
@@ -130,10 +130,10 @@ const verifyAnswer = (answer: string, indexQuestion: number, alternative: string
                 <p class="card-text" v-html="question.title"/>
                 
                 <div v-for="(alternative, indexAlternative) in JSON.parse(question.alternatives)" :key="indexAlternative" class="form-check mt-2">
-                    <input v-model="form[indexQuestion]" :value="alternative.alternative" role="button" class="form-check-input" type="radio" :name="`flexRadioDefault-${question.id}`">
+                    <input v-model="form[indexQuestion]" :value="alternative.alternative" :checked="question.answers[0]?.selected === alternative.alternative" role="button" class="form-check-input" type="radio" :name="`flexRadioDefault-${question.id}`">
 
                     <label class="form-check-label d-flex" for="flexRadioDefault">
-                        <b>{{alternative.alternative}})</b> <span :class="verifyAnswer(question.answer, indexQuestion, alternative.alternative)" v-html="alternative.title"/>
+                        <b>{{alternative.alternative}})</b> <span :class="verifyAnswer(question.answer, indexQuestion, alternative.alternative, question.answers[0]?.selected)" v-html="alternative.title"/>
                     </label>
 
                 </div>
