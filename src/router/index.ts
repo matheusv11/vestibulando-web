@@ -94,7 +94,7 @@ router.beforeEach((to, from, next) => { // VALIDAR ROTAS // SE TEM TOKEN OU NÃO
 
   if(to.meta.validate){
     
-    if(tokenState.token) return next("/")
+    if(tokenState.token) return next("/") // TALVEZ USAR UM BEFORE EM CADA ROTA SEPARADA, PERFORMA MELHOR
 
   }
   
