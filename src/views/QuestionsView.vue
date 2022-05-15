@@ -9,6 +9,14 @@ const formObject: any = [] // SOLUÇÃO TEMPORÁRIA
 
 const form = ref([...formObject]);
 
+const queryObject = { // NÃO MUDAR DIRETAMENTE
+    subjectIds: [],
+    disciplineIds: [],
+    vestibularIds: []
+}
+
+const queryParams = ref({...queryObject});
+
 const subjects = ref([]);
 const disciplines = ref([{}]); // USAR REF DE OBJETOS COMO NO REACT?
 const vestibulars = ref([{}]);
@@ -85,9 +93,14 @@ const allVestibulars = async () => {
     const { data } = await axios.get("/vestibular");
     vestibulars.value = data
 }
+const allSubjects = async () => {
+    const { data } = await axios.get("/subject");
+    subjects.value = data
+}
 
 const allQuestions = async () => {
     const { data } = await axios.get("/question", {
+        params: queryParams.value,
         headers: { // CASO LOGADO
             Authorization: `Bearer ${tokenState.token}` // CUIDAR COM OS TIPOS DE TOKEN
         }
@@ -100,6 +113,7 @@ onMounted(()=> {
     allVestibulars();
     allDisciplines();
     allQuestions();
+    allSubjects();
 });
 
 const verifyAnswer = (answer: string, indexQuestion: number, alternative: string, selectedAnswer?: string) => {
@@ -114,6 +128,65 @@ const verifyAnswer = (answer: string, indexQuestion: number, alternative: string
 
 <template>
     <div class="mx-auto" style="width: 50%;">
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <form @submit.prevent="allQuestions" method="POST">
+            
+                    <div class="dropdown mt-2">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Disciplinas
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li v-for="discipline in disciplines" :key="discipline.id">
+                                <div class="form-check d-flex">
+                                    <input v-model="queryParams.disciplineIds" class="form-check-input" type="checkbox" :value="discipline.id" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        {{discipline.name}}
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="dropdown mt-2">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Vestibulares
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li v-for="vestibular in vestibulars" :key="vestibular.id">
+                                <div class="form-check d-flex">
+                                    <input v-model="queryParams.vestibularIds" class="form-check-input" type="checkbox" :value="vestibular.id" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        {{vestibular.name}}
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="dropdown mt-2">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Assuntos
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li v-for="subject in subjects" :key="subject.id">
+                                <div class="form-check d-flex">
+                                    <input v-model="queryParams.subjectIds" class="form-check-input" type="checkbox" :value="subject.id" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        {{subject.name}}
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button class="btn btn-primary mt-2" type="submit"> Buscar </button>
+
+                </form>
+            </div>
+        </div>
+
         <div class="card mt-3" v-for="(question, indexQuestion) in questions" :key="question.id">
             
             <div class="card-header d-flex justify-content-between">
