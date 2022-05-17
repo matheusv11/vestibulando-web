@@ -44,6 +44,9 @@ const logout = () => {
           <li class="nav-item">
             <RouterLink class="nav-link" active-class="active" to="/vestibular-proprio"> Próprio vestibular </RouterLink>
           </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" v-if="tokenState.token" active-class="active" to="/perfil"> Perfil </RouterLink>
+          </li>
         </ul>
 
         <div class="d-flex">

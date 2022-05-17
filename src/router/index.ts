@@ -63,6 +63,11 @@ const router = createRouter({
       component: () => import('../views/OwnVestibularView.vue')
     },
     {
+      path: '/perfil',
+      name: 'profile',
+      component: () => import('../views/ProfileView.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // beforeEnter // PODERIAR CONTROLAR ASSIM
