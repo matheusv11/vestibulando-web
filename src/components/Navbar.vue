@@ -14,38 +14,40 @@ const logout = () => {
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+  <nav class="navbar navbar-expand-lg navbar-light nav-style">
     <div class="container-fluid">
-      <RouterLink class="navbar-brand" aria-current="page" to="/">Home</RouterLink>
+      <RouterLink class="navbar-brand" aria-current="page" to="/">
+        <img src="@/assets/vue.png" width="32" height="32"/>
+      </RouterLink>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <RouterLink class="nav-link" v-if="!tokenState.token" active-class="active" aria-current="page" to="/cadastro"> Registrar-se </RouterLink>
+            <RouterLink class="nav-link text-link" v-if="!tokenState.token" active-class="active active-link" aria-current="page" to="/cadastro"> Registrar-se </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" v-if="!tokenState.token" active-class="active" to="/login"> Login </RouterLink>
+            <RouterLink class="nav-link text-link" v-if="!tokenState.token" active-class="active active-link" to="/login"> Login </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" to="/disciplina"> Cadastrar Disciplina </RouterLink>
+            <RouterLink class="nav-link text-link" active-class="active active-link" to="/disciplina"> Cadastrar Disciplina </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" to="/assunto"> Cadastrar Assunto </RouterLink>
+            <RouterLink class="nav-link text-link" active-class="active active-link" to="/assunto"> Cadastrar Assunto </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" to="/vestibular"> Cadastrar Vestibular </RouterLink>
+            <RouterLink class="nav-link text-link" active-class="active active-link" to="/vestibular"> Cadastrar Vestibular </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" to="/questao"> Cadastrar Questão </RouterLink>
+            <RouterLink class="nav-link text-link" active-class="active active-link" to="/questao"> Cadastrar Questão </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" to="/questoes"> Questões </RouterLink>
+            <RouterLink class="nav-link text-link" active-class="active active-link" to="/questoes"> Questões </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" active-class="active" to="/vestibular-proprio"> Próprio vestibular </RouterLink>
+            <RouterLink class="nav-link text-link" active-class="active active-link" to="/vestibular-proprio"> Próprio vestibular </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" v-if="tokenState.token" active-class="active" to="/perfil"> Perfil </RouterLink>
+            <RouterLink class="nav-link text-link" v-if="tokenState.token" active-class="active active-link" to="/perfil"> Perfil </RouterLink>
           </li>
         </ul>
 
@@ -60,4 +62,25 @@ const logout = () => {
 </template>
 
 <style scoped>
+
+/* SOBRESCREVER O NAV-LINK */
+.text-link { 
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+  opacity: 82%;
+  /* color: black; */;
+  /* text-decoration: none; */
+  /* font-size: 17px; */
+  /* font-weight: bold; */
+}
+
+.active-link {
+  opacity: 100%;
+  font-weight: bold;
+}
+
+.nav-style{
+  /* background-color: #53a2d4; */
+  background-color: #5b91b3;
+}
 </style>
